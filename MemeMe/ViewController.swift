@@ -11,6 +11,8 @@ import UIKit
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var memedImage: UIImage!
+    var windows: UIWindow?
+    var memes = [Meme]()
     
     struct Meme {
         var topText: String = ""
@@ -89,12 +91,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func keyboardWillShow(_ notification:Notification) {
-        
-        view.frame.origin.y -= getKeyboardHeight(notification)
+        if bottomField.isFirstResponder {
+            view.frame.origin.y -= getKeyboardHeight(notification)
+        }
     }
     
     func keyboardWillHide(_ notification:Notification) {
-        view.frame.origin.y = 0
+        if bottomField.isFirstResponder {
+            view.frame.origin.y = 0   
+        }
     }
     
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
@@ -107,8 +112,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func save() {
         // Create the meme
         memedImage = generateMemedImage()
-        let meme = Meme(topText: topField.text!, bottomText: bottomField.text!, originalImage: imagePickerView.image!, memedImage: memedImage)
+        var meme = Meme(topText: topField.text!, bottomText: bottomField.text!, originalImage: imagePickerView.image!, memedImage: memedImage)
         
+     //   let object = UIApplication.shared.delegate
+      //  let appDelegate = object as! AppDelegate
+      //  appDelegate.memes.append(meme)
     }
     
     func generateMemedImage() -> UIImage {
@@ -138,7 +146,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             NSStrokeColorAttributeName: UIColor.black,
             NSForegroundColorAttributeName: UIColor.white,
             NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSStrokeWidthAttributeName: 5.0
+            NSStrokeWidthAttributeName: -5.0
         ]
         
         topField.text = "TOP"
